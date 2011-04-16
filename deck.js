@@ -119,7 +119,6 @@ function makeCdsArray(cds) {
 function readProperty(cds_array, refd, key, dict, reverse_dict) {
 	keys = ['00', '01', '10'];
 	if (refd[key].length == 2) {
-		console.log('got length two for key' + key);
 		var finished = refd[key];
 		if ($.inArray(dict[keys[0]],finished) != -1) {
 			if($.inArray(dict[keys[1]], finished) != -1) {
@@ -132,7 +131,6 @@ function readProperty(cds_array, refd, key, dict, reverse_dict) {
 		}
 		return reverse_dict[val];
 	} else if (refd[key].length == 1) {
-		console.log('got length one for key' + key);
 		var bits = new Array();
 		var finished = refd[key][0];
 		var bit = cds_array.shift();
@@ -152,7 +150,6 @@ function readProperty(cds_array, refd, key, dict, reverse_dict) {
 		}
 		return bits[0] + bits[1];
 	} else {
-		console.log('got length zero for key' + key);
 		var bits = new Array();
 		bits.push(cds_array.shift());
 		if (bits[0] == '0') {
@@ -172,7 +169,6 @@ function readCard(cds_array, refd) {
 	var rev_pat = patterns[pat];
 	var shp = readProperty(cds_array, refd, rev_col + rev_num + rev_pat, shapes, reverse_shapes);
 	node =  col + num + pat + shp;
-	console.log(btor(node));
 	onNode(btor(node), refd);
 	return node;
 }
