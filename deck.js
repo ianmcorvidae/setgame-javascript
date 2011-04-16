@@ -4,14 +4,14 @@ function randomProperty() {
 	return rand;
 }
 function makeCard(deck) {
-	card = null;
+	var card = null;
 	while (card == null || $.inArray(card, deck) != -1) {
 		card = randomProperty() + randomProperty() + randomProperty() + randomProperty();
 	}
 	return card;
 }
 function makeDeck() {
-	deck = new Array();
+	var deck = new Array();
 	while (deck.length < 81) {
 		deck.push(makeCard(deck));
 	}
@@ -27,17 +27,17 @@ shapes = {'00': 'C', '01': 'T', '10': 'D'}
 reverse_shapes = {'C': '00', 'T': '01', 'D': '10'}
 
 function makeReferenceDictionary() {
-	refd = new Object();
+	var refd = new Object();
 	refd[''] = new Array();
-	keys = ['00', '01', '10'];
-	for (i_a in keys) {
-		color = colors[keys[i_a]];
+	var keys = ['00', '01', '10'];
+	for (var i_a in keys) {
+		var color = colors[keys[i_a]];
 		refd[color] = new Array();
-		for (i_b in keys) {
-			num = numbers[keys[i_b]];
+		for (var i_b in keys) {
+			var num = numbers[keys[i_b]];
 			refd[color + num] = new Array();
-			for (i_c in keys) {
-				pat = patterns[keys[i_c]];
+			for (var i_c in keys) {
+				var pat = patterns[keys[i_c]];
 				refd[color+num+pat] = new Array();
 	}}}
 	return refd;
@@ -51,29 +51,29 @@ function onNode(node, refd) {
 }}}}
 
 function btor(card) {
-	rc = colors[card.substring(0,2)] + numbers[card.substring(2,4)] + patterns[card.substring(4,6)] + shapes[card.substring(6,8)];
+	var rc = colors[card.substring(0,2)] + numbers[card.substring(2,4)] + patterns[card.substring(4,6)] + shapes[card.substring(6,8)];
 	return rc;
 }
 function rtob(card) {
-	bc = reverse_colors[card.substring(0,1)] + reverse_numbers[card.substring(1,2)] + reverse_patterns[card.substring(2,3)] + reverse_shapes[card.substring(3,4)];
+	var bc = reverse_colors[card.substring(0,1)] + reverse_numbers[card.substring(1,2)] + reverse_patterns[card.substring(2,3)] + reverse_shapes[card.substring(3,4)];
 	return bc;
 }
 
-function convert_deck(deck, per_card) {
-	rd = new Array();
+function convertDeck(deck, per_card) {
+	var rd = new Array();
 	for (var card_index in deck) {
 		rd.push(per_card(deck[card_index]));
 	}
 	return rd;
 }
 function rdtobd(deck) {
-	return convert_deck(deck, rtob);
+	return convertDeck(deck, rtob);
 }
 function bdtord(deck) {
-	return convert_deck(deck, btor);
+	return convertDeck(deck, btor);
 }
 
-function encode_2bits(bits, arr) {
+function encodeTwoBits(bits, arr) {
 	if (bits[0] == '1') {
 		arr.push('1');
 	} else {
@@ -82,12 +82,93 @@ function encode_2bits(bits, arr) {
 	}
 }
 function bdtocds(deck) {
-	referenceDictionary = makeReferenceDictionary();
-	outputBits = new Array();
+	var referenceDictionary = makeReferenceDictionary();
+	var outputBits = new Array();
 	for (var index in deck) {
 		onNode(btor(deck[index]), referenceDictionary);
 	}
 }
-function cdstord(cds) {
-	referenceDictionary = makeReferenceDictionary();
+function cdstobd(cds) {
+	var referenceDictionary = makeReferenceDictionary();
+	var cds_array = makeCdsArray(cds);
+	var deck = new Array();
+	var pointer = 0;
+	while (deck.length < 81) {
+		deck.push(readCard(cds_array, referenceDictionary));
+	}
+	return deck
+}
+function makeCdsArray(cds) {
+	var cds_array = new Array();
+	for (var i = 0; i < cds.length; i++) {
+		var bin = parseInt(cds.substring(i, i+1),16).toString(2);
+		while (bin.length < 4) {
+			bin = '0' + bin;
+		}
+		cds_array.push(bin.substring(0,1))
+		cds_array.push(bin.substring(1,2))
+		cds_array.push(bin.substring(2,3))
+		cds_array.push(bin.substring(3,4))
+	}
+	return cds_array;
+}
+function readProperty(cds_array, refd, key, dict, reverse_dict) {
+	keys = ['00', '01', '10'];
+	if (refd[key].length == 2) {
+		console.log('got length two for key' + key);
+		var finished = refd[key];
+		if ($.inArray(dict[keys[0]],finished) != -1) {
+			if($.inArray(dict[keys[1]], finished) != -1) {
+				var val = dict[keys[2]];
+			} else {
+				var val = dict[keys[1]];
+			}
+		} else {
+			var val = dict[keys[0]];
+		}
+		return reverse_dict[val];
+	} else if (refd[key].length == 1) {
+		console.log('got length one for key' + key);
+		var bits = new Array();
+		var finished = refd[key][0];
+		var bit = cds_array.shift();
+		var finished_num = parseInt(reverse_dict[finished],2);
+		var bit_num = parseInt(bit, 2);
+		if (bit_num >= finished_num) {
+			if (bit == '0') {
+				bits.push('0');
+				bits.push('1');
+			} else {
+				bits.push('1');
+				bits.push('0');
+			}
+		} else {
+			bits.push('0');
+			bits.push(bit);
+		}
+		return bits[0] + bits[1];
+	} else {
+		console.log('got length zero for key' + key);
+		var bits = new Array();
+		bits.push(cds_array.shift());
+		if (bits[0] == '0') {
+			bits.push(cds_array.shift());
+		} else {
+			bits.push('0');
+		}
+		return bits[0] + bits[1];
+	}
+}
+function readCard(cds_array, refd) {
+	var col = readProperty(cds_array, refd, '', colors, reverse_colors);
+	var rev_col = colors[col];
+	var num = readProperty(cds_array, refd, rev_col, numbers, reverse_numbers);
+	var rev_num = numbers[num];
+	var pat = readProperty(cds_array, refd, rev_col + rev_num, patterns, reverse_patterns);
+	var rev_pat = patterns[pat];
+	var shp = readProperty(cds_array, refd, rev_col + rev_num + rev_pat, shapes, reverse_shapes);
+	node =  col + num + pat + shp;
+	console.log(btor(node));
+	onNode(btor(node), refd);
+	return node;
 }
