@@ -15,7 +15,11 @@ function makeDeck() {
 	while (deck.length < 81) {
 		deck.push(makeCard(deck));
 	}
-	return deck;
+	if (deck.length == 81) {
+		return deck;
+	} else {
+		return makeDeck();
+	}
 }
 colors = {'00': 'P', '01': 'G', '10': 'R'}
 reverse_colors = {'P': '00', 'G': '01', 'R': '10'}
