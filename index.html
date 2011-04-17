@@ -2,8 +2,50 @@
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
 		<script src="deck.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function () {
+				fieldSize = 12;
+				columnHeight = 3;
+				winWidth = $(window).width();
+				winHeight = $(window).height();
+				if ((winHeight/winWidth) > (12/21)) {
+				cardWidth = (winWidth - 200)/ 7;
+				cardHeight = cardWidth * 4/3;
+				} else {
+				cardHeight = (winHeight - 200) /3;
+				cardWidth = cardHeight * 3/4;
+				}
+
+				deck = makeDeck();
+				playingField = new Array(fieldSize);
+
+				$('.column').width(cardWidth).height(cardHeight*3);
+				for(var column=0; column < 7; column++){
+					var thisColumn = $('#card-column-' + column);
+					if (column < 4) {
+						for(var columnCount = 0; columnCount < columnHeight; columnCount++){
+							var playingFieldLocation = column*columnHeight + columnCount;
+							playingField[playingFieldLocation] = deck.pop();
+							$('<object class="card" id="card-' + playingFieldLocation + '" type="image/svg+xml" data="svg/' + btor(playingField[playingFieldLocation]) + '.svg" style="width: ' + cardWidth + '; height: '+ cardHeight +'"></object>').appendTo(thisColumn);
+					}}
+				}
+			});
+		</script> 
+		<style type="text/css">
+			.column {
+				display: inline-block;
+			}
+		</style>
 	</head>
 	<body>
-		<a href="#">Click</a>
+		<div id="card-container">
+			<div class="column" id="card-column-0"></div>
+			<div class="column" id="card-column-1"></div>
+			<div class="column" id="card-column-2"></div>
+			<div class="column" id="card-column-3"></div>
+			<div class="column" id="card-column-4"></div>
+			<div class="column" id="card-column-5"></div>
+			<div class="column" id="card-column-6"></div>
+		</div>
 	</body>
 </html>
