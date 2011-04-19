@@ -28,7 +28,7 @@
 						for(var columnCount = 0; columnCount < columnHeight; columnCount++){
 							var playingFieldLocation = column*columnHeight + columnCount;
 							playingField[playingFieldLocation] = deck.pop();
-							$('<object class="card" id="card-' + playingFieldLocation + '" type="image/svg+xml" data="svg/' + btor(playingField[playingFieldLocation]) + '.svg" style="width: ' + cardWidth + '; height: '+ cardHeight +'"></object>').appendTo(thisColumn);
+							$('<object class="card" id="card-' + playingFieldLocation + '" type="image/svg+xml" data="svg/' + btor(playingField[playingFieldLocation]) + '.svg"></object>').width(cardWidth).height(cardHeight).appendTo(thisColumn);
 					}}
 				}
 
