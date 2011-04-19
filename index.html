@@ -6,15 +6,17 @@
 			$(document).ready(function () {
 				fieldSize = 12;
 				columnHeight = 3;
-				winWidth = $(window).width();
-				winHeight = $(window).height();
-				if ((winHeight/winWidth) > (12/21)) {
-				cardWidth = (winWidth - 200)/ 7;
+//				winWidth = $(window).width();
+//				winHeight = $(window).height();
+//				if ((winHeight/winWidth) > (12/21)) {
+//				cardWidth = (winWidth - 200)/ 7;
+//				cardHeight = cardWidth * 4/3;
+//				} else {
+//				cardHeight = cardWidth * 4/3;
+//				cardWidth = 100;
+//				}
+				cardWidth = 100;
 				cardHeight = cardWidth * 4/3;
-				} else {
-				cardHeight = (winHeight - 200) /3;
-				cardWidth = cardHeight * 3/4;
-				}
 
 				deck = makeDeck();
 				playingField = new Array(fieldSize);
@@ -29,6 +31,35 @@
 							$('<object class="card" id="card-' + playingFieldLocation + '" type="image/svg+xml" data="svg/' + btor(playingField[playingFieldLocation]) + '.svg" style="width: ' + cardWidth + '; height: '+ cardHeight +'"></object>').appendTo(thisColumn);
 					}}
 				}
+
+var linebreak = "<br />";
+foundaset = false;
+var i, j, k;
+checkArray = new Array();
+console.log("For loop code is beginning");
+console.log(linebreak);
+for(i = 0; i < 10 && !foundaset; i++)
+{
+	for(j = i + 1; j < 11 && !foundaset; j++)
+	{
+		for(k = j + 1; k < 12 && !foundaset; k++)
+		{
+		checkArray[0] = btor(playingField[i]);
+		checkArray[1] = btor(playingField[j]);
+		checkArray[2] = btor(playingField[k]);
+		console.log("Cards: " + i + "," + j + "," + k);
+		console.log(linebreak);
+		console.log(checkArray);
+		console.log(linebreak);
+
+		}
+	}		
+}
+
+console.log("For loop code is finished!");
+
+
+
 			});
 		</script> 
 		<style type="text/css">
@@ -49,3 +80,5 @@
 		</div>
 	</body>
 </html>
+
+
