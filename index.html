@@ -33,6 +33,15 @@
       					$('.card').fadeIn(2000,'linear');
 				});
 
+				$('.inner-card').click(function () {
+						$card = $(this).parent();
+						if ($card.hasClass('unselected')) {
+							$card.addClass('selected').removeClass('unselected');
+						} else if ($card.hasClass('selected')) {
+							$card.addClass('unselected').removeClass('selected');
+						}
+				});
+
 
 var linebreak = "<br />";
 foundaset = false;
@@ -67,7 +76,13 @@ console.log("For loop code is finished!");
 			}
 			.card {
 				position: relative;
+			}
+			.unselected {
 				padding: 5px;
+			}
+			.selected {
+				border: 5px solid black;
+				background-color: red;
 			}
 			.inner-card {
 				position: absolute;
@@ -78,39 +93,39 @@ console.log("For loop code is finished!");
 	<body>
 		<div id="card-container">
 			<div class="column" id="card-column-0">
-				<div class="card" id="card-0"></div>
-				<div class="card" id="card-1"></div>
-				<div class="card" id="card-2"></div>
+				<div class="card unselected" id="card-0"></div>
+				<div class="card unselected" id="card-1"></div>
+				<div class="card unselected" id="card-2"></div>
 			</div>
 			<div class="column" id="card-column-1">
-				<div class="card" id="card-3"></div>
-				<div class="card" id="card-4"></div>
-				<div class="card" id="card-5"></div>
+				<div class="card unselected" id="card-3"></div>
+				<div class="card unselected" id="card-4"></div>
+				<div class="card unselected" id="card-5"></div>
 			</div>
 			<div class="column" id="card-column-2">
-				<div class="card" id="card-6"></div>
-				<div class="card" id="card-7"></div>
-				<div class="card" id="card-8"></div>
+				<div class="card unselected" id="card-6"></div>
+				<div class="card unselected" id="card-7"></div>
+				<div class="card unselected" id="card-8"></div>
 			</div>
 			<div class="column" id="card-column-3">
-				<div class="card" id="card-9"></div>
-				<div class="card" id="card-10"></div>
-				<div class="card" id="card-11"></div>
+				<div class="card unselected" id="card-9"></div>
+				<div class="card unselected" id="card-10"></div>
+				<div class="card unselected" id="card-11"></div>
 			</div>
 			<div class="column" id="card-column-4">
-				<div class="card" id="card-12"></div>
-				<div class="card" id="card-13"></div>
-				<div class="card" id="card-14"></div>
+				<div class="card unselected" id="card-12"></div>
+				<div class="card unselected" id="card-13"></div>
+				<div class="card unselected" id="card-14"></div>
 			</div>
 			<div class="column" id="card-column-5">
-				<div class="card" id="card-15"></div>
-				<div class="card" id="card-16"></div>
-				<div class="card" id="card-17"></div>
+				<div class="card unselected" id="card-15"></div>
+				<div class="card unselected" id="card-16"></div>
+				<div class="card unselected" id="card-17"></div>
 			</div>
 			<div class="column" id="card-column-6">
-				<div class="card" id="card-18"></div>
-				<div class="card" id="card-19"></div>
-				<div class="card" id="card-20"></div>
+				<div class="card unselected" id="card-18"></div>
+				<div class="card unselected" id="card-19"></div>
+				<div class="card unselected" id="card-20"></div>
 			</div>
 		</div>
 	</body>
