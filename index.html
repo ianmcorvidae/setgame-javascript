@@ -9,12 +9,12 @@
 				columnHeight = 3;
 
 				cardWidth = 100;
-				cardHeight = cardWidth * 4/3;
+				cardHeight = cardWidth * 382/272;
 
 				deck = makeDeck();
 				playingField = new Array(fieldSize);
 
-				$('.column').width(cardWidth).height(cardHeight*3);
+				$('.column').width(cardWidth+10).height((cardHeight+10)*3);
 				$('.card').width(cardWidth).height(cardHeight);
 				for(var column=0; column < 7; column++){
 					var thisColumn = $('#card-column-' + column);
@@ -67,6 +67,7 @@ console.log("For loop code is finished!");
 			}
 			.card {
 				position: relative;
+				padding: 5px;
 			}
 			.inner-card {
 				position: absolute;
