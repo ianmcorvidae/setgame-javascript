@@ -92,12 +92,13 @@ function bdtocds(deck) {
 		onNode(btor(deck[index]), referenceDictionary);
 	}
 }
-function cdstobd(cds) {
+function cdstobd(cds, length) {
+	length = typeof(length) != 'undefined' ? length : 81;
 	var referenceDictionary = makeReferenceDictionary();
 	var cds_array = makeCdsArray(cds);
 	var deck = new Array();
 	var pointer = 0;
-	while (deck.length < 81) {
+	while (deck.length < length) {
 		deck.push(readCard(cds_array, referenceDictionary));
 	}
 	return deck
