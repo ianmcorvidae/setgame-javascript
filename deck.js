@@ -172,3 +172,23 @@ function readCard(cds_array, refd) {
 	onNode(btor(node), refd);
 	return node;
 }
+
+function checkSet(card1, card2, card3) {
+	var propCount = 0;
+	var arrayCount = 0;
+	var isaset = true;
+	var problems = [false, false, false, false];
+
+	for(arrayCount = 0; arrayCount < 4; arrayCount++) {
+		if(!checkProperty(card1.substring(propCount, propCount + 2), card2.substring(propCount, propCount + 2), card3.substring(propCount, propCount + 2))) {
+			problems[arrayCount] = true;
+			isaset = false;
+		}
+		propCount = propCount + 2;
+	}
+	return [isaset, problems];
+}
+
+function checkProperty(p1, p2, p3) {
+	return (parseInt(p1, 2) + parseInt(p2, 2) + parseInt(p3, 2)) % 3 == 0;
+}
