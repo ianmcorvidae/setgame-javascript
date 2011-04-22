@@ -7,26 +7,15 @@
 			$(document).ready(function () {
 				fieldSize = 12;
 				columnHeight = 3;
-//				winWidth = $(window).width();
-//				winHeight = $(window).height();
-//				if ((winHeight/winWidth) > (12/21)) {
-//				cardWidth = (winWidth - 200)/ 7;
-//				cardHeight = cardWidth * 4/3;
-//				} else {
-//				cardHeight = cardWidth * 4/3;
-//				cardWidth = 100;
-//				}
+
 				cardWidth = 100;
 				cardHeight = cardWidth * 4/3;
 
 				deck = makeDeck();
 				playingField = new Array(fieldSize);
 
-
-
-
-
 				$('.column').width(cardWidth).height(cardHeight*3);
+				$('.card').width(cardWidth).height(cardHeight);
 				for(var column=0; column < 7; column++){
 					var thisColumn = $('#card-column-' + column);
 					if (column < 4) {
@@ -34,6 +23,7 @@
 							var playingFieldLocation = column*columnHeight + columnCount;
 							playingField[playingFieldLocation] = deck.pop();
 							$('<object type="image/svg+xml" data="svg/' + btor(playingField[playingFieldLocation]) + '.svg"></object>').width(cardWidth).height(cardHeight).appendTo('#card-' + playingFieldLocation);
+							$('<div class="inner-card"></div>').appendTo('#card-' + playingFieldLocation).width(cardWidth).height(cardHeight);
 					}}
 				}
 
@@ -74,6 +64,13 @@ console.log("For loop code is finished!");
 		<style type="text/css">
 			.column {
 				display: inline-block;
+			}
+			.card {
+				position: relative;
+			}
+			.inner-card {
+				position: absolute;
+				z-index: 2;
 			}
 		</style>
 	</head>
