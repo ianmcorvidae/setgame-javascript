@@ -7,6 +7,7 @@
 			$(document).ready(function () {
 				fieldSize = 12;
 				columnHeight = 3;
+				svgdir = "svg"
 
 				cardWidth = 100;
 				cardHeight = cardWidth * 382/272;
@@ -23,7 +24,7 @@
 							var playingFieldLocation = column*columnHeight + columnCount;
 							playingField[playingFieldLocation] = deck.pop();
 							$('<div class="inner-card"></div>').appendTo('#card-' + playingFieldLocation).width(cardWidth).height(cardHeight);
-							$('<object type="image/svg+xml" data="svg/' + btor(playingField[playingFieldLocation]) + '.svg"></object>').width(cardWidth).height(cardHeight).appendTo('#card-' + playingFieldLocation);
+							$('<object type="image/svg+xml" data="' + svgdir + '/' + btor(playingField[playingFieldLocation]) + '.svg"></object>').width(cardWidth).height(cardHeight).appendTo('#card-' + playingFieldLocation);
 					}}
 				}
 
@@ -40,6 +41,19 @@
 						} else if ($card.hasClass('selected')) {
 							$card.addClass('unselected').removeClass('selected');
 						}
+				});
+
+				$('.swap').click(function () {
+					$button = $(this);
+					if ($button.hasClass('off')) {
+						$button.addClass('on').removeClass('off');
+						svgdir = "svg-cb";
+						console.log(svgdir);
+					} else if ($button.hasClass('on')) {
+						$button.addClass('off').removeClass('on');
+						svgdir = "svg";
+						console.log(svgdir);
+					}
 				});
 
 
@@ -88,6 +102,12 @@ console.log("For loop code is finished!");
 				position: absolute;
 				z-index: 2;
 			}
+			.off {
+				color: #ff0000;
+			}
+			.on {
+				color: #0000ff;
+			}
 		</style>
 	</head>
 	<body>
@@ -128,6 +148,13 @@ console.log("For loop code is finished!");
 				<div class="card unselected" id="card-20"></div>
 			</div>
 		</div>
+
+<div id="swapbutton" class="swap off">
+
+Swap colors
+
+</div>
+
 	</body>
 </html>
 
