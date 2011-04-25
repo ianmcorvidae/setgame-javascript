@@ -47,10 +47,18 @@
 					$button = $(this);
 					if ($button.hasClass('off')) {
 						$button.addClass('on').removeClass('off');
+						$('.card object').each(function() { 
+							$this = $(this); style = $this.attr('style');
+							data = $this.attr('data'); $this.replaceWith('<object type="image/svg+xml" style="' + style + '" data="' + data.replace('svg', 'svg-cb') + '"></object>'); 
+						});
 						svgdir = "svg-cb";
 						console.log(svgdir);
 					} else if ($button.hasClass('on')) {
 						$button.addClass('off').removeClass('on');
+						$('.card object').each(function() { 
+							$this = $(this); style = $this.attr('style');
+							data = $this.attr('data'); $this.replaceWith('<object type="image/svg+xml" style="' + style + '" data="' + data.replace('svg-cb', 'svg') + '"></object>'); 
+						});
 						svgdir = "svg";
 						console.log(svgdir);
 					}
