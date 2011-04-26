@@ -15,51 +15,64 @@
 				deck = makeDeck();
 				playingField = new Array(fieldSize);
 
+				// SET WIDTHS AND HEIGHTS
 				$('.column').width(cardWidth+10).height((cardHeight+10)*3);
-				$('.card').width(cardWidth).height(cardHeight);
+				$('.card, .inner-card').width(cardWidth).height(cardHeight);
+
+				// DEAL OUT INITIAL TABLEAU
 				for(var column=0; column < 7; column++){
 					var thisColumn = $('#card-column-' + column);
 					if (column < 4) {
 						for(var columnCount = 0; columnCount < columnHeight; columnCount++){
 							var playingFieldLocation = column*columnHeight + columnCount;
 							playingField[playingFieldLocation] = deck.pop();
-							$('<div class="inner-card"></div>').appendTo('#card-' + playingFieldLocation).width(cardWidth).height(cardHeight);
+							$('#card-' + playingFieldLocation).addClass('has-card');
 							$('<object type="image/svg+xml" data="' + svgdir + '/' + btor(playingField[playingFieldLocation]) + '.svg"></object>').width(cardWidth).height(cardHeight).appendTo('#card-' + playingFieldLocation);
 					}}
 				}
 
+				// PRETTILY FADE IN THE CARDS
 				$('.card').hide()
 
 				$.windowLoaded(function () {
       					$('.card').fadeIn(2000,'linear');
 				});
 
+				// CLICK HANDLERS
 				$('.inner-card').click(function () {
 						$card = $(this).parent();
-						if ($card.hasClass('unselected')) {
-							$card.addClass('selected').removeClass('unselected');
-						} else if ($card.hasClass('selected')) {
-							$card.addClass('unselected').removeClass('selected');
+						if ($card.hasClass('has-card')) {
+							if ($card.hasClass('unselected')) {
+								$card.addClass('selected').removeClass('unselected');
+							} else if ($card.hasClass('selected')) {
+								$card.addClass('unselected').removeClass('selected');
+							}
 						}
 				});
 
+				function swap_svgdir(olddir, newdir) {
+						$('.card').hide();
+						$('.card object').each(function() { 
+							$this = $(this); 
+							style = $this.attr('style');
+							data = $this.attr('data'); 
+							$this.replaceWith('<object type="image/svg+xml" style="' + style + '" data="' + data.replace(olddir, newdir) + '"></object>'); 
+						});
+						$.windowLoaded(function () {
+							$('.card').fadeIn(2000,'linear');
+						});
+				}
 				$('.swap').click(function () {
 					$button = $(this);
 					if ($button.hasClass('off')) {
 						$button.addClass('on').removeClass('off');
-						$('.card object').each(function() { 
-							$this = $(this); style = $this.attr('style');
-							data = $this.attr('data'); $this.replaceWith('<object type="image/svg+xml" style="' + style + '" data="' + data.replace('svg', 'svg-cb') + '"></object>'); 
-						});
 						svgdir = "svg-cb";
+						swap_svgdir('svg', svgdir);
 						console.log(svgdir);
 					} else if ($button.hasClass('on')) {
 						$button.addClass('off').removeClass('on');
-						$('.card object').each(function() { 
-							$this = $(this); style = $this.attr('style');
-							data = $this.attr('data'); $this.replaceWith('<object type="image/svg+xml" style="' + style + '" data="' + data.replace('svg-cb', 'svg') + '"></object>'); 
-						});
 						svgdir = "svg";
+						swap_svgdir('svg-cb', svgdir);
 						console.log(svgdir);
 					}
 				});
@@ -121,39 +134,39 @@ console.log("For loop code is finished!");
 	<body>
 		<div id="card-container">
 			<div class="column" id="card-column-0">
-				<div class="card unselected" id="card-0"></div>
-				<div class="card unselected" id="card-1"></div>
-				<div class="card unselected" id="card-2"></div>
+				<div class="card unselected" id="card-0"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-1"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-2"><div class="inner-card"></div></div>
 			</div>
 			<div class="column" id="card-column-1">
-				<div class="card unselected" id="card-3"></div>
-				<div class="card unselected" id="card-4"></div>
-				<div class="card unselected" id="card-5"></div>
+				<div class="card unselected" id="card-3"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-4"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-5"><div class="inner-card"></div></div>
 			</div>
 			<div class="column" id="card-column-2">
-				<div class="card unselected" id="card-6"></div>
-				<div class="card unselected" id="card-7"></div>
-				<div class="card unselected" id="card-8"></div>
+				<div class="card unselected" id="card-6"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-7"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-8"><div class="inner-card"></div></div>
 			</div>
 			<div class="column" id="card-column-3">
-				<div class="card unselected" id="card-9"></div>
-				<div class="card unselected" id="card-10"></div>
-				<div class="card unselected" id="card-11"></div>
+				<div class="card unselected" id="card-9"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-10"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-11"><div class="inner-card"></div></div>
 			</div>
 			<div class="column" id="card-column-4">
-				<div class="card unselected" id="card-12"></div>
-				<div class="card unselected" id="card-13"></div>
-				<div class="card unselected" id="card-14"></div>
+				<div class="card unselected" id="card-12"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-13"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-14"><div class="inner-card"></div></div>
 			</div>
 			<div class="column" id="card-column-5">
-				<div class="card unselected" id="card-15"></div>
-				<div class="card unselected" id="card-16"></div>
-				<div class="card unselected" id="card-17"></div>
+				<div class="card unselected" id="card-15"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-16"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-17"><div class="inner-card"></div></div>
 			</div>
 			<div class="column" id="card-column-6">
-				<div class="card unselected" id="card-18"></div>
-				<div class="card unselected" id="card-19"></div>
-				<div class="card unselected" id="card-20"></div>
+				<div class="card unselected" id="card-18"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-19"><div class="inner-card"></div></div>
+				<div class="card unselected" id="card-20"><div class="inner-card"></div></div>
 			</div>
 		</div>
 
